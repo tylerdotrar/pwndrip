@@ -1,16 +1,63 @@
-# **UPDATED FORK**
+## Pwndrip Goals
+First and foremost, I do not know `go` lol but ultimately the goal of this fork is to learn some shit, fix some broken components of Pwndrop, add a couple small features, and attempt to make it a bit more intuitive.
+
+**Proposed feature list:**
+- [ ] Add a `Upload via PowerShell command` button similar to SygniaLabs' `Upload via cURL command` implementation.
+- [ ] Toggle file upload support (e.g., `-disable-upload`).
+- [ ] Perchance fix the broken daemon.
+- [ ] Perchance add a toggle/parameter to disable HTTPS requirement.
+
+**Example deployment via Ubuntu 24.04 LXC:**
+```shell
+# Dependencies
+apt update && apt upgrade -y
+apt install git screen golang-go make -y
+
+# Compile from source
+git clone https://github.com/tylerdotrar/pwndrip /opt/pwndrop
+cd /opt/pwndrop
+make build
+
+# Example first-time configuration in /usr/local/pwndrop/*
+./build/pwndrop install
+ln -s /usr/local/pwndrop/pwndrop /usr/bin/pwndrop
+echo """
+[pwndrop]
+listen_ip = 
+http_port = 80
+https_port = 443
+data_dir = /usr/local/pwndrop/data
+admin_dir = /usr/local/pwndrop/admin
+
+[setup]
+username = 'admin'
+password = 'password'
+redirect_url = 'https://github.com/tylerdotrar'
+secret_path = '/example'
+""" > /usr/local/pwndrop/pwndrop.ini
+
+# Deploy in a custom screen (daemon broke af)
+screen -S pwndrop-example
+pwndrop -no-dns -no-autocert
+# CTRL + A + D
+
+# To re-attach to screen:
+screen -R pwndrop-example
+```
+
+## Begin SygniaLabs' README
 
 As the original repository did not receive updates nor PRs for a couple of years, we will use this fork to address some issues and upgrade its capabilities.
 Read the changes carefully.
 
-## Addressed issues
+### Addressed issues
 
 * Upgraded dependencies (golang.org/x/crypto) to address Autocert fails to sign certificate automatically with Let's encrypt.
 ```
 acme/autocert: unable to satisfy "https://acme-v02.api.letsencrypt.org/acme/authz-v3/..." for domain "www.mydomain.com": no viable challenge type found
 ```
 
-## New capabilities
+### New capabilities
 
 * Added capability to upload via command line utilities. A new button added to the main page UI, where you can get an example cURL command to use for upload:
 <p align="center">
@@ -23,7 +70,7 @@ curl -X POST -H "x-pwndrop-content-type: application/javascript" -H "Authorizati
 ```
 
 
-## Build from source code
+### Build from source code
 
 The original installation files were removed as we are going to Go Get the necessary dependencies.
 This installation was tested with GO version: **1.18.4**: https://go.dev/dl/
@@ -46,9 +93,8 @@ ls build/
 A 'build' directory will be created under the repository folder.
 You can use the compiled binary in the same way described in the original README below.
 
+## Begin Original README
 
-
-*****************************
 <p align="center">
   <img alt="pwndrop logo" src="https://raw.githubusercontent.com/kgretzky/pwndrop/master/media/pwndrop-logo-512.png" height="120" />
   <p align="center">
