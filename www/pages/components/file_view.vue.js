@@ -297,7 +297,7 @@ var appFileView = Vue.component("app-file-view", {
                 disk_free: 0,
                 disk_used: 0
             },
-            powershellCommand: "$wc=[System.Net.WebClient]::new(); $wc.Headers.Add('Authorization','<upload_key>'); $wc.UploadFile('http(s)://<pwndrip_host>/api/v1/files','path/to/file')" 
+            powershellCommand: "$wc=[System.Net.WebClient]::new(); $wc.Headers.Add('Authorization','<upload_key>'); $wc.UploadFile('http(s)://<pwndrip_host>/api/v1/files','path/to/file')",
             pwshCommand: "irm -Method POST -Headers @{Authorization = '<upload_key>'} -Form @{file = Get-File path/to/file} http(s):/<pwndrip_host>/api/v1/files",
             curlCommand: "curl -X POST -H \"Authorization: <upload_key>\" -F \"file=@path/to/file\" http(s)://<pwndrip_host>/api/v1/files",
 		};
