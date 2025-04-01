@@ -1,11 +1,16 @@
 ## Pwndrip Goals
+
 First and foremost, I do not know `go` lol but ultimately the goal of this fork is to learn some shit, fix some broken components of Pwndrop, add a couple small features, and attempt to make it a bit more intuitive.
 
 **Proposed feature list:**
-- [x] Add a `Upload via PowerShell command` button similar to SygniaLabs' `Upload via cURL command` implementation.
-- [ ] Toggle file upload support (e.g., `-disable-upload`).
-- [ ] Perchance fix the broken daemon.
-- [ ] Perchance add a toggle/parameter to disable HTTPS requirement.
+- [x] Add a `Upload via Windows PowerShell command` / `Upload via PowerShell Core command` buttons similar to SygniaLabs' implementation.
+- [ ] Toggle goofy file upload support (e.g., `-disable-upload`).
+- [ ] IP whitelisting/blacklisting as well as enhanced logging (e.g., from [this fork](https://github.com/kgretzky/pwndrop/pull/36)).
+- [ ] Perchance introducing proxy logger (e.g., from [RedWarden](https://github.com/mgeeky/RedWarden/blob/master/lib/proxylogger.py)).
+- [ ] Perchance introducing IP lookup (e.g., from [RedWarden](https://github.com/mgeeky/RedWarden/blob/master/lib/ipLookupHelper.py)).
+- [ ] Probably other smaller things lol
+
+![image](https://github.com/user-attachments/assets/4db03e61-185b-447b-b0ad-781a522526bf)
 
 **Example deployment via Ubuntu 24.04 LXC:**
 ```shell
@@ -36,10 +41,10 @@ redirect_url = 'https://github.com/tylerdotrar'
 secret_path = '/example'
 """ > /usr/local/pwndrop/pwndrop.ini
 
-# Deploy in a custom screen (daemon broke af)
+# Deploy in a custom screen
 screen -S pwndrop-example
 pwndrop -no-dns -no-autocert
-# CTRL + A + D
+# Exit the screen: CTRL + A + D
 
 # To re-attach to screen:
 screen -R pwndrop-example
