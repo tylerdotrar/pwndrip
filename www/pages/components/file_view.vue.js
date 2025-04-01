@@ -221,15 +221,7 @@ var appFileView = Vue.component("app-file-view", {
 				</form>
 			</div>
       </div>
-      <!-- cURL Upload Command -->
-      <div class="curl-cmd">
-	      <a class="btn-copy" ref="copyCurlUpload" href @click.prevent="copyCurl()">
-   		    <button class="btn btn-outline-success btn-copy-link col-xs-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3" v-tooltip:bottom="'Copy cURL command'">
-        		<i class="fas fa-copy" style="margin-right: 5px"></i>Upload via cURL command
-   		    </button>
-   	    </a>
-      </div>
-      <!-- PowerShell Upload Command -->
+      <!-- Windows PowerShell Upload Command -->
       <div class="powershell-cmd">
 	      <a class="btn-copy" ref="copyPowerShellUpload" href @click.prevent="copyPowerShell()">
    		    <button class="btn btn-outline-success btn-copy-link col-xs-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3" v-tooltip:bottom="'Copy PowerShell command'">
@@ -242,6 +234,14 @@ var appFileView = Vue.component("app-file-view", {
 	      <a class="btn-copy" ref="copyPwshUpload" href @click.prevent="copyPwsh()">
    		    <button class="btn btn-outline-success btn-copy-link col-xs-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3" v-tooltip:bottom="'Copy Pwsh command'">
         		<i class="fas fa-copy" style="margin-right: 5px"></i>Upload via PowerShell Core command
+   		    </button>
+   	    </a>
+      </div>
+      <!-- cURL Upload Command -->
+      <div class="curl-cmd">
+	      <a class="btn-copy" ref="copyCurlUpload" href @click.prevent="copyCurl()">
+   		    <button class="btn btn-outline-success btn-copy-link col-xs-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3" v-tooltip:bottom="'Copy cURL command'">
+        		<i class="fas fa-copy" style="margin-right: 5px"></i>Upload via cURL command
    		    </button>
    	    </a>
       </div>
@@ -297,8 +297,9 @@ var appFileView = Vue.component("app-file-view", {
                 disk_free: 0,
                 disk_used: 0
             },
+            powershellCommand: "$wc=[System.Net.WebClient]::new(); $wc.Headers.Add('Authorization','<upload_key>'); $wc.UploadFile('http(s)://<pwndrip_host>/api/v1/files','path/to/file')" 
+            pwshCommand: "irm -Method POST -Headers @{Authorization = '<upload_key>'} -Form @{file = Get-File path/to/file} http(s):/<pwndrip_host>/api/v1/files",
             curlCommand: "curl -X POST -H \"Authorization: <upload_key>\" -F \"file=@path/to/file\" http(s)://<pwndrip_host>/api/v1/files",
-            powershellCommand: "irm -Method POST -Headers @{Authorization = '<upload_key>'} -Form @{file = Get-File path/to/file} http(s):/<pwndrip_host>/api/v1/files",
 		};
     },
     computed: {
