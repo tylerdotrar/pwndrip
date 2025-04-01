@@ -2,7 +2,7 @@
 First and foremost, I do not know `go` lol but ultimately the goal of this fork is to learn some shit, fix some broken components of Pwndrop, add a couple small features, and attempt to make it a bit more intuitive.
 
 **Proposed feature list:**
-- [ ] Add a `Upload via PowerShell command` button similar to SygniaLabs' `Upload via cURL command` implementation.
+- [x] Add a `Upload via PowerShell command` button similar to SygniaLabs' `Upload via cURL command` implementation.
 - [ ] Toggle file upload support (e.g., `-disable-upload`).
 - [ ] Perchance fix the broken daemon.
 - [ ] Perchance add a toggle/parameter to disable HTTPS requirement.
