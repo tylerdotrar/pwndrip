@@ -233,7 +233,15 @@ var appFileView = Vue.component("app-file-view", {
       <div class="powershell-cmd">
 	      <a class="btn-copy" ref="copyPowerShellUpload" href @click.prevent="copyPowerShell()">
    		    <button class="btn btn-outline-success btn-copy-link col-xs-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3" v-tooltip:bottom="'Copy PowerShell command'">
-        		<i class="fas fa-copy" style="margin-right: 5px"></i>Upload via PowerShell command
+        		<i class="fas fa-copy" style="margin-right: 5px"></i>Upload via Windows PowerShell command
+   		    </button>
+   	    </a>
+      </div>
+      <!-- PowerShell Core (pwsh) Upload Command -->
+      <div class="pwsh-cmd">
+	      <a class="btn-copy" ref="copyPwshUpload" href @click.prevent="copyPwsh()">
+   		    <button class="btn btn-outline-success btn-copy-link col-xs-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3" v-tooltip:bottom="'Copy Pwsh command'">
+        		<i class="fas fa-copy" style="margin-right: 5px"></i>Upload via PowerShell Core command
    		    </button>
    	    </a>
       </div>
@@ -290,7 +298,7 @@ var appFileView = Vue.component("app-file-view", {
                 disk_used: 0
             },
             curlCommand: "curl -X POST -H \"Authorization: <upload_key>\" -F \"file=@path/to/file\" http(s)://<pwndrip_host>/api/v1/files",
-            powershellCommand: "iwr -Method POST -Headers @{Authorization = '<upload_key>'} -Form @{file = Get-File path/to/file} http(s):/<pwndrip_host>/api/v1/files",
+            powershellCommand: "irm -Method POST -Headers @{Authorization = '<upload_key>'} -Form @{file = Get-File path/to/file} http(s):/<pwndrip_host>/api/v1/files",
 		};
     },
     computed: {
@@ -317,9 +325,19 @@ var appFileView = Vue.component("app-file-view", {
                     filesurl += ":" + l.port;
             }
             filesurl += escape("/api/v1/files");
-            this.powershellCommand = "iwr -Method POST -Headers @{Authorization = '" + localStorage.Authorization + "'} -Form @{file = Get-Item path/to/file}";
-            this.powershellCommand = this.powershellCommand + " " + filesurl;
+            this.powershellCommand = "$wc=[System.Net.WebClient]::new(); $wc.Headers.Add('Authorization','" + localStorage.Authorization + "'); $wc.UploadFile('" + filesurl + "','path/to/file')";
             this.$refs.copyPowerShellUpload.setAttribute("data-clipboard-text", this.powershellCommand);
+        },
+		copyPwsh() {
+            var l = window.location;
+            var filesurl = l.protocol + "//" + l.hostname;
+            if (l.port != "" && (l.port != 443 && l.port != 80)) {
+                    filesurl += ":" + l.port;
+            }
+            filesurl += escape("/api/v1/files");
+            this.pwshCommand = "irm -Method POST -Headers @{Authorization = '" + localStorage.Authorization + "'} -Form @{file = Get-Item path/to/file}";
+            this.pwshCommand = this.pwshCommand + " " + filesurl;
+            this.$refs.copyPwshUpload.setAttribute("data-clipboard-text", this.pwshCommand);
         },
         doShuffle() {
 			this.uploads = _.shuffle(this.uploads);
